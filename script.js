@@ -136,7 +136,7 @@ $(function() {
       // ルームに送って自分のところにも反映
       room.send(msg);
       messages.prepend('<div><span class="you">You: </span>' + msg + '</div>');
-      $('#mymessage').val('');
+      $('#mymessage').val('&#x1f92c;');
     });
 
     // チャットとかファイルが飛んできたらdataでonになる
