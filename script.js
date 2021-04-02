@@ -135,7 +135,7 @@ $(function() {
       const msg = $('#mymessage').val();
       // ルームに送って自分のところにも反映
       room.send(msg);
-      messages.prepend('<div><span class="you">You: </span>' + msg + '</div>');
+      messages.prepend('<div id="mess"><span class="you">You: </span>' + msg + '</div>');
       $('#mymessage').val('&#x1f92c;');
     });
 
