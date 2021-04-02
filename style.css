@@ -93,4 +93,5 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 }
 .messages {
   font-weight: 900;
+  position: absolute;
 }
