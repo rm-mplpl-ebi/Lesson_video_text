@@ -66,10 +66,6 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 }
 
 
-#mymessage {
-  font-size: 100%;
-}
-
 
 
 
@@ -95,7 +91,4 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   color: #0C6BA1;
   font-weight: 600;
 }
-.messages {
-  font-weight: 900;
-  position: absolute;
-}
+
