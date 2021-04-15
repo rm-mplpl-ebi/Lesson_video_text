@@ -68,8 +68,6 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 
 
 
-
-
 .chatbox {
   float: left;
   height: 300px;
@@ -91,4 +89,6 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   color: #0C6BA1;
   font-weight: 600;
 }
-
+.messages {
+  font-weight: 900;
+}
