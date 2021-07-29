@@ -90,9 +90,9 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   font-weight: 600;
 }
 .messages {
-  -webkit-animation:blink 1.5s ease-in-out infinite alternate;
-  -moz-animation:blink 1.5s ease-in-out infinite alternate;
-  animation:blink 1.5s ease-in-out infinite alternate;
+  -webkit-animation:blink 0.5s ease-in-out infinite alternate;
+  -moz-animation:blink 0.5s ease-in-out infinite alternate;
+  animation:blink 0.5s ease-in-out infinite alternate;
 }
 @-webkit-keyframes blink{
     0% {opacity:0;}
