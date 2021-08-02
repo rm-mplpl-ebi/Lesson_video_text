@@ -131,10 +131,6 @@ $(function() {
 
     // メッセージ送信部分
     $('#sendtextform').on('submit', e => {
-      $('#messages').removeClass('send-messages');
-      $('#messages')[0].offsetWidth = $('#messages')[0].offsetWidth;
-      $('#messages').addClass('send-messages');
-
       e.preventDefault(); // form送信を抑制
       const msg = $('#mymessage').val();
       // ルームに送って自分のところにも反映
