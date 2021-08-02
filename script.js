@@ -131,9 +131,9 @@ $(function() {
 
     // メッセージ送信部分
     $('#sendtextform').on('submit', e => {
-      $('#messages').removeClass('messages');
+      $('#messages').removeClass('send-messages');
       $('#messages')[0].offsetWidth = $('#messages')[0].offsetWidth;
-      $('#messages').addClass('messages');
+      $('#messages').addClass('send-messages');
 
       e.preventDefault(); // form送信を抑制
       const msg = $('#mymessage').val();
