@@ -94,7 +94,7 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   -moz-animation:blink 0.5s ease-in-out infinite alternate;
   animation:blink 0.5s ease-in-out infinite alternate;
   animation-duration: 3s;
-  animation-iteration-count: 2;
+  animation-iteration-count: infinite;
 }
 @-webkit-keyframes blink{
     0% {opacity:0;}
