@@ -112,10 +112,10 @@ $(function() {
 
     // Get video stream from the second camera
     // Note: This assumes that the id of the second video source is stored in #videoSource2
-    videoSource = $('#videoSource2').val();
-    constraints = {
+    const videoSource2 = $('#videoSource2').val();
+    const constraints = {
         audio: false,  // Only get the video
-        video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+        video: { deviceId: videoSource2 ? { exact: videoSource2 } : undefined },
     };
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
         $('#my-second-video').get(0).srcObject = stream;
@@ -123,9 +123,7 @@ $(function() {
         console.error(err);
     });
     //ここまで
-
       step2();
-
   }
 
   function step2() {
