@@ -125,10 +125,7 @@ $(function() {
     //ここまで
 
       step2();
-    }).catch(err => {
-      $('#step1-error').show();
-      console.error(err);
-    });
+
   }
 
   function step2() {
