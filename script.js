@@ -117,7 +117,7 @@ $(function() {
         audio: false,  // Only get the video
         video: { deviceId: videoSource2 ? { exact: videoSource2 } : undefined },
     };
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+    navigator.mediaDevices.getUserMedia(constraints2).then(stream => {
         $('#my-second-video').get(0).srcObject = stream;
     }).catch(err => {
         console.error(err);
