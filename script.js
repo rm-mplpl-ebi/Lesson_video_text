@@ -105,6 +105,24 @@ $(function() {
         room.replaceStream(stream);
         return;
       }
+    }).catch(err => {
+        $('#step1-error').show(); // ここのエラーハンドリングの処理から追加部分
+        console.error(err);
+    });
+
+    // Get video stream from the second camera
+    // Note: This assumes that the id of the second video source is stored in #videoSource2
+    videoSource = $('#videoSource2').val();
+    constraints = {
+        audio: false,  // Only get the video
+        video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+    };
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        $('#my-second-video').get(0).srcObject = stream;
+    }).catch(err => {
+        console.error(err);
+    });
+    //ここまで
 
       step2();
     }).catch(err => {
