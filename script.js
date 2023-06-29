@@ -113,7 +113,7 @@ $(function() {
     // Get video stream from the second camera
     // Note: This assumes that the id of the second video source is stored in #videoSource2
     const videoSource2 = $('#videoSource2').val();
-    const constraints = {
+    const constraints2 = {
         audio: false,  // Only get the video
         video: { deviceId: videoSource2 ? { exact: videoSource2 } : undefined },
     };
