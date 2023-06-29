@@ -2,7 +2,8 @@
 'use strict'
 
 $(function() {
-  // Peer object
+  // PeerJSオブジェクトを作成する
+  // keyとdebugのプロパティを使用してPeerオブジェクトのオプションを設定する
   const peer = new Peer({
     key:   "644d53b1-40c1-478d-8497-b57cf15a5737",
     debug: 3,
@@ -10,55 +11,68 @@ $(function() {
 
   let localStream;
   let room;
+
+  // Peerオブジェクトが接続を開く(openする)ときのハンドラ
   peer.on('open', () => {
-    $('#my-id').text(peer.id);
-    // Get things started
+    $('#my-id').text(peer.id); // IDを表示
+
+    // 初期化ステップ1を呼び出す
     step1();
   });
 
+  // Peerオブジェクトがエラーを検出したときのハンドラ
   peer.on('error', err => {
     alert(err.message);
-    // Return to step 2 if error occurs
+
+    // エラー発生時はステップ2を呼び出す
     step2();
   });
 
+  // make-call fromが送信されたときのハンドラ
   $('#make-call').on('submit', e => {
-    e.preventDefault();
-    // Initiate a call!
+    e.preventDefault(); // デフォルトのform送信動作をキャンセル
+
+    // ルーム名を取得して通話を開始する
     const roomName = $('#join-room').val();
     if (!roomName) {
       return;
     }
+
+    // ルームに参加する．取得したlocalStreamを使用する
     room = peer.joinRoom('mesh_multi_' + roomName, {stream: localStream});
 
-    $('#room-id').text(roomName);
+    $('#room-id').text(roomName); // ルーム名を表示
+    // ステップ3を呼び出す
     step3(room);
   });
 
+  // end-callボタンがクリックされた時のハンドラ
   $('#end-call').on('click', () => {
     $('#chatbox-'+room.name).hide() // 切断時にチャットボックスを隠す
-    room.close();
+    room.close(); // ルームを閉じる
+    //ステップ2を呼び出す
     step2();
   });
 
-  // Retry if getUserMedia fails
+  // getUserMediaが失敗した場合のリトライボタンのハンドラ
   $('#step1-retry').on('click', () => {
-    $('#step1-error').hide();
-    step1();
+    $('#step1-error').hide(); // エラーメッセージを非表示にする
+    step1(); // ステップ1を再試行する
   });
 
-  // set up audio and video input selectors
+  // オーディオとビデオのn風力ソースセレクタの設定
   const audioSelect = $('#audioSource');
   const videoSelect = $('#videoSource');
   const selectors = [audioSelect, videoSelect];
 
+  // 利用可能なメディアデバイの一覧を取得
   navigator.mediaDevices.enumerateDevices()
     .then(deviceInfos => {
       const values = selectors.map(select => select.val() || '');
       selectors.forEach(select => {
         const children = select.children(':first');
         while (children.length) {
-          select.remove(children);
+          select.remove(children); // セレクタの既存のオプションを削除
         }
       });
 
@@ -66,17 +80,19 @@ $(function() {
         const deviceInfo = deviceInfos[i];
         const option = $('<option>').val(deviceInfo.deviceId);
 
+        // オーディオ入力デバイスの場合
         if (deviceInfo.kind === 'audioinput') {
           option.text(deviceInfo.label ||
             'Microphone ' + (audioSelect.children().length + 1));
           audioSelect.append(option);
-        } else if (deviceInfo.kind === 'videoinput') {
+        } else if (deviceInfo.kind === 'videoinput') { // ビデオ入力デバイスの場合
           option.text(deviceInfo.label ||
             'Camera ' + (videoSelect.children().length + 1));
           videoSelect.append(option);
         }
       }
 
+      // セレクタが以前に選択したデバイスを指定している場合はその選択を維持
       selectors.forEach((select, selectorIndex) => {
         if (Array.prototype.slice.call(select.children()).some(n => {
             return n.value === values[selectorIndex];
@@ -85,12 +101,13 @@ $(function() {
         }
       });
 
+      // オーディオ，またはビデオのソースが変更された場合にステップ1を再実行
       videoSelect.on('change', step1);
       audioSelect.on('change', step1);
     });
 
   function step1() {
-    // Get audio/video stream
+    // getUserMediaを使用してオーディオとビデオのストリームを取得
     const audioSource = $('#audioSource').val();
     const videoSource = $('#videoSource').val();
     const constraints = {
@@ -100,7 +117,7 @@ $(function() {
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
       $('#my-video').get(0).srcObject = stream;
       localStream = stream;
-
+      
       if (room) {
         room.replaceStream(stream);
         return;
@@ -110,8 +127,8 @@ $(function() {
         console.error(err);
     });
 
-    // Get video stream from the second camera
-    // Note: This assumes that the id of the second video source is stored in #videoSource2
+    // getUserMediaを使用してオーディオとビデオのストリームを取得
+    // ここは2台目カメラ用，音声は2ついらないのでオフにしておく
     const videoSource2 = $('#videoSource2').val();
     const constraints2 = {
         audio: false,  // Only get the video
@@ -127,6 +144,7 @@ $(function() {
   }
 
   function step2() {
+    // UIの切り替え
     $('#their-videos').empty();
     $('#step1, #step3').hide();
     $('#step2').show();
@@ -134,10 +152,11 @@ $(function() {
   }
 
   function step3(room) {
-    // chatboxを追加する
+    // チャットボックスの設定，メッセージ送信のハンドラ，チャットメッセージやストリームが届いた時のハンドラ
     const chatbox = $('<div></div>').addClass('chatbox').attr('id', 'chatbox'+room.name);
     const header = $('<h4></h4>').html('Room: <strong>' + room.name + '</strong>');
     const messages = $('<div><em>Peer connected.</em></div>').addClass('messages');
+
     chatbox.append(header);
     chatbox.append(messages);
     $('#chatframe').append(chatbox);
